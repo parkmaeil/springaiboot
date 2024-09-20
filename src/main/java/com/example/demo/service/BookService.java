@@ -20,4 +20,9 @@ public class BookService {
     public void deleteById(Long id){
         bookRepository.deleteById(id); // delete from Book b where b.id=?1
     }
+
+    public Book save(Book book){
+        return bookRepository.save(book); // insert into Book ~~
+    }
+
 }

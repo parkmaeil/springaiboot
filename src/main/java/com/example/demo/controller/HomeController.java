@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -38,5 +39,11 @@ public class HomeController {
     @GetMapping("/register")
     public String register(){
         return "register"; // register.html
+    }
+
+    @PostMapping("/register")
+    public String register(Book book){
+        bookService.save(book);
+        return "redirect:/list";
     }
 }
