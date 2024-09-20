@@ -1,13 +1,42 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Book;
+import com.example.demo.service.BookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final BookService bookService;
+
     // http://localhost:8081/home
     @GetMapping("/home")
     public String home(){
         return "home"; // home.html
+    }
+
+    @GetMapping("/list")
+    public String findAll(Model model){
+        List<Book> books=bookService.findAll();
+        model.addAttribute("books", books);
+        return "list"; // list.html - 404
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteById(@PathVariable Long id){
+        bookService.deleteById(id);
+        return "redirect:/list";
+    }
+
+    @GetMapping("/register")
+    public String register(){
+        return "register"; // register.html
     }
 }
