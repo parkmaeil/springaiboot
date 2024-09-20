@@ -42,8 +42,28 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(Book book){
+    public String register(Book book){ // book.id(X)-->insert
         bookService.save(book);
+        return "redirect:/list";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Long id, Model model){
+        Book book=bookService.findById(id);
+        model.addAttribute("book", book);
+        return "detail"; // detail.html
+    }
+
+    @GetMapping("/modify/{id}")
+    public String modify(@PathVariable Long id, Model model){
+        Book book=bookService.findById(id);
+        model.addAttribute("book", book);
+        return "modify"; // modify.html
+    }
+
+    @PostMapping("/modify")
+    public String modify(Book book){ // book.id(2) --> Table(2) : update
+        bookService.update(book);
         return "redirect:/list";
     }
 }

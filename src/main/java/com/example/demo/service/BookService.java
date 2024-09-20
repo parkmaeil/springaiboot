@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,4 +26,27 @@ public class BookService {
         return bookRepository.save(book); // insert into Book ~~
     }
 
+    public Book findById(Long id){
+        Optional<Book> optional=bookRepository.findById(id);
+        if(optional.isPresent()){
+            return optional.get(); //
+        }else{
+          throw new RuntimeException("Book not found with id:"+id);
+        }
+    }
+
+    public Book update(Book book){
+      Optional<Book> optional=bookRepository.findById(book.getId());
+      if(optional.isPresent()){
+          Book dbbook=optional.get(); // DB에서 가져온 Book
+          dbbook.setTitle(book.getTitle());
+          dbbook.setPrice(book.getPrice());
+          dbbook.setAuthor(book.getAuthor());
+          dbbook.setPage(book.getPage());
+          bookRepository.save(dbbook); // update SQL : 설명
+          return dbbook;
+      }else{
+          throw new RuntimeException("Book not found with id:"+book.getId());
+      }
+    }
 }
