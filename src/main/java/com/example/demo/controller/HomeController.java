@@ -61,9 +61,9 @@ public class HomeController {
         return "modify"; // modify.html
     }
 
-    @PostMapping("/modify")
-    public String modify(Book book){ // book.id(2) --> Table(2) : update
-        bookService.update(book);
+    @PostMapping("/modify/{id}")
+    public String modify(@PathVariable Long id, Book book){ // book.id(2) --> Table(2) : update
+        bookService.update(id, book);
         return "redirect:/list";
     }
 }

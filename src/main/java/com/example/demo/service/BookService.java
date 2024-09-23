@@ -4,6 +4,7 @@ import com.example.demo.entity.Book;
 import com.example.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,18 +36,19 @@ public class BookService {
         }
     }
 
-    public Book update(Book book){
-      Optional<Book> optional=bookRepository.findById(book.getId());
+    @Transactional
+    public Book update(Long id, Book book){
+      Optional<Book> optional=bookRepository.findById(id);
       if(optional.isPresent()){
           Book dbbook=optional.get(); // DB에서 가져온 Book
           dbbook.setTitle(book.getTitle());
           dbbook.setPrice(book.getPrice());
           dbbook.setAuthor(book.getAuthor());
           dbbook.setPage(book.getPage());
-          bookRepository.save(dbbook); // update SQL : 설명
-          return dbbook;
+          //bookRepository.save(dbbook); // update SQL : 설명
+          return dbbook; // 수정이된다.(더티체킹) - 성능저하
       }else{
-          throw new RuntimeException("Book not found with id:"+book.getId());
+          throw new RuntimeException("Book not found with id:"+id);
       }
     }
 }
